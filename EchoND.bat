@@ -357,7 +357,7 @@ if %errorlevel%==0 (
 pause
 goto main
 
-:macspoofer
+:spoofmac
 cls
 type echo.txt
 echo.
@@ -373,17 +373,19 @@ echo.
 echo 1. Enter a new MAC address manually
 echo 2. Generate a random MAC address
 set /p choice=Enter your choice:
-if %choice%==1 (
-    set /p newmacaddress=Enter a new MAC address (format: XX-XX-XX-XX-XX-XX):
-) else if %choice%==2 (
-    set /a rand1=%random%%%256
-    set /a rand2=%random%%%256
-    set /a rand3=%random%%%256
-    set /a rand4=%random%%%256
-    set /a rand5=%random%%%256
-    set /a rand6=%random%%%256
-    set newmacaddress=00-%rand1:~-2%-%rand2:~-2%-%rand3:~-2%-%rand4:~-2%-%rand5:~-2%-%rand6:~-2%
-)
+if %choice%==1 set /p newmacaddress=Enter a new MAC address (format: XX-XX-XX-XX-XX-XX):
+pause
+goto menu
+if %choice%==2 goto :randmac
+
+:randmac
+set /a rand1=%random%%%256
+set /a rand2=%random%%%256
+set /a rand3=%random%%%256
+set /a rand4=%random%%%256
+set /a rand5=%random%%%256
+set /a rand6=%random%%%256
+set newmacaddress=00-%rand1:~-2%-%rand2:~-2%-%rand3:~-2%-%rand4:~-2%-%rand5:~-2%-%rand6:~-2%
 cls
 type echo.txt
 echo.
@@ -610,7 +612,7 @@ if %choice% equ 1 (
 
     for /l %%i in (1,1,%num_emails%) do (
         set "subject=Mass Email %%i of %num_emails%"
-        set "body=This is a mass email sent using a batch script."
+        set "body=This is a mass email sent using a the Echo Network Diagnostic Tool."
         echo Sending email %%i of %num_emails%...
         :: Start stunnel to encrypt the email
         start /wait /b stunnel -config stunnel.conf
